@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>MyCalculator MK2</title>
+
+    <style>
+        body {
+            font-family: Verdana, Calibri, Sans Serif;
+            background-color: #F0F9FC;
+        }
+        
+        h1 {
+            color: #023047;
+            text-align: center;
+        }
+        
+        h2 {
+            color: #FC8500;
+            text-align: center;
+        }
+        
+        #calculator {
+            margin-left: calc(50vw - 120px);
+            width: 240px;
+            height: 325px;
+            background-color: gray;
+            border-radius: 6px;
+            box-shadow: 10px 10px 30px grey;
+            font-family: "Helvetica Neue ultralight", BlinkMacSystemFont, -apple-system, sans-serif;
+        }
+        
+        #calculator div {
+            width: 220px;
+            height: 58px;
+            background-color: #505050;
+            color: white;
+            text-align: right;
+            font-weight: normal;
+            font-size: 24pt;
+            border-radius: 6px 6px 0px 0px;
+            padding-right: 20px;
+            padding-top: 22px;
+        }
+        
+        #calculator button {
+            float: left;
+            width: 60px;
+            height: 49px;
+            border-style: solid;
+            border-width: 0px 1px 1px 0px;
+            border-color: #505050;
+            color: white;
+            font-size: 17px;
+            font-family: "Helvetica Neue ultralight", BlinkMacSystemFont, -apple-system, sans-serif;
+            background-color: #707070;
+        }
+        
+        #calculator button.left {
+            border-width: 0px 1px 1px 1px;
+        }
+        
+        #calculator button.operator {
+            background-color: #FFB701;
+        }
+        
+        #calculator button.big {
+            font-size: 20px;
+        }
+        
+        #calculator button.large {
+            width: 120px;
+        }
+        
+        #calculator button.lc {
+            border-radius: 0 0 0 6px;
+        }
+        
+        #calculator button.rc {
+            border-radius: 0 0 6px 0;
+        }
+        
+        #calculator button:active {
+            opacity: 0.3;
+        }
+    </style>
+    <script>
+        //Variabili globali;
+
+        var op1;
+        var op2;
+        //la varibaile contatore virgola serve a non far aggiungere piu' di una virgola alla volta
+        var contatoreVirgola;
+        //la variabile operazione viene settata subito a "%" perche' e' l'unica operzione che si fa con un'operando solo
+        var operazione = "%";
+
+        //Funzione che cancella la schermata della calcolatrice;
+
+        function AC() {
+            var obj = document.getElementById('display');
+            obj.innerHTML = "0";
+            grande();
+        }
+
+        //Funzione che cambia il segno del numero;
+
+        function negativo() {
+            var obj = document.getElementById('display');
+            obj.innerHTML = obj.innerHTML * -1;
+            display.innerHTML = obj.innerHTML;
+
+        }
+
+        function piccolo() {
+            display.style.fontSize = "14pt";
+        }
+
+        function grande() {
+            display.style.fontSize = "24pt";
+        }
+
+        //Funzione che aggiunge la virgola;
+
+        function virgola() {
+            if (contatoreVirgola == 0) {
+                var obj = document.getElementById('display');
+                obj.innerHTML = obj.innerHTML + ".";
+                display.innerHTML = obj.innerHTML;
+                contatoreVirgola++;
+            }
+
+        }
+
+        //Funzione che acquisice il primo operando;
+
+        function operatore() {
+            grande();
+            var obj = document.getElementById('display');
+            op1 = obj.innerHTML;
+            obj.innerHTML = "0";
+
+        }
+
+        //Funzione che acquisisce il secondo operando e fa l'operazione;
+
+        function uguale() {
+            var obj = document.getElementById('display');
+            op2 = obj.innerHTML;
+            switch (operazione) {
+                case "+":
+                    obj.innerHTML = parseFloat(op1) + parseFloat(op2);
+                    break;
+                case "-":
+                    obj.innerHTML = op1 - op2;
+                    break;
+                case "*":
+                    obj.innerHTML = op1 * op2;
+                    break;
+                case "/":
+                    n = op1 / op2;
+                    var num = n.toFixed(4);
+                    obj.innerHTML = num;
+                    break;
+
+            }
+            if (display.innerHTML.length > 12) {
+                piccolo();
+            }
+            if (display.innerHTML.length > 20) {
+                display.innerHTML = "Errore";
+            } else {
+                display.innerHTML = obj.innerHTML;
+            }
+            // La variabile operazione viene ri-settata subito a "%" perche' e' l'unica operzione che
+            // si fa con un solo operando quindi risulta subito pronta all'operazione dopo (concatena)
+            operazione = "%";
+        }
+
+        //Funzione per il calcolo della percentuale
+
+        function Percentuale() {
+            var obj = document.getElementById('display');
+            op2 = obj.innerHTML;
+            var calcoloPercentuale = (op1 * op2) / 100;
+            switch (operazione) {
+                case "+":
+                    obj.innerHTML = parseFloat(op1) + parseFloat(calcoloPercentuale);
+                    break;
+                case "-":
+                    obj.innerHTML = op1 - calcoloPercentuale;
+                    break;
+                case "*":
+                    obj.innerHTML = (op1 * op2) / 100;
+                    break;
+                case "/":
+                    obj.innerHTML = (op1 / op2) * 100;
+                    break;
+                case "%":
+                    op1 = obj.innerHTML;
+                    obj.innerHTML = op1 / 100;
+                    break;
+            }
+            if (display.innerHTML.length > 12 && display.innerHTML.length < 20) {
+                piccolo();
+            }
+            if (display.innerHTML.length > 20) {
+                display.innerHTML = "Errore";
+            } else {
+                display.innerHTML = obj.innerHTML;
+            }
+            // La variabile operazione viene ri-settata subito a "%" perche' e' l'unica operzione che
+            // si fa con un solo operando quindi risulta subito pronta all'operazione dopo (concatena)
+            operazione = "%";
+        }
+
+        //Funzioni per l'aquisizione dell'operatore da usare;
+
+        function addizione() {
+            operazione = "+";
+            operatore();
+        }
+
+        function sottrazione() {
+            operazione = "-";
+            operatore();
+        }
+
+        function moltiplicazione() {
+            operazione = "*";
+            operatore();
+        }
+
+        function divisione() {
+            operazione = "/";
+            operatore();
+        }
+
+        //Fine funzioni operatore
+
+        function digit(obj) {
+            var display = document.getElementById('display');
+
+            if (display.innerHTML == '0') {
+                display.innerHTML = obj.innerHTML;
+                contatoreVirgola = 0;
+            } else {
+                if (display.innerHTML.length < 20) {
+                    display.innerHTML += obj.innerHTML;
+                }
+            }
+            if (display.innerHTML.length > 12) {
+                piccolo();
+            }
+        }
+    </script>
+
+
+</head>
+
+<body>
+    <h1><i><u>MyCalculator Shandor Taccone - (252625</u>)</i></h1>
+
+    <div id="calculator">
+        <div id="display">0</div>
+        <button class="left" onclick="AC();">AC</button>
+        <button onclick="negativo();">+/-</button>
+        <button onclick="Percentuale();">%</button>
+        <button class="operator big" onclick="divisione();">/</button>
+        <button onClick="digit(this)" class="left big">7</button>
+        <button onClick="digit(this)" class="big">8</button>
+        <button onclick="digit(this)" class="big">9</button>
+        <button class="operator big" onclick="moltiplicazione();">x</button>
+        <button onclick="digit(this)" class="left big">4</button>
+        <button onclick="digit(this)" class="big">5</button>
+        <button onclick="digit(this)" class="big">6</button>
+        <button class="operator big" onclick="sottrazione();">-</button>
+        <button onclick="digit(this)" class="left big">1</button>
+        <button onclick="digit(this)" class="big">2</button>
+        <button onclick="digit(this)" class="big">3</button>
+        <button class="operator big" onclick="addizione();">+</button>
+        <button onclick="digit(this)" class="left big large lc">0</button>
+        <button class="big" onclick="virgola();">,</button>
+        <button class="operator big rc" onclick="uguale();">=</button>
+    </div>
+    <br>
+    <h2><i>Progetto Tecnologie del WEB</i></h2>
+</body>
+
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Insert title here</title>
+    <style>
+        body,
+        th {
+            font-family: Verdana, Calibri, Sans Serif;
+        }
+        
+        th {
+            color: #ccccff;
+        }
+        
+        table {
+            margin: 10px;
+            padding: 10px;
+            border-spacing: 0px;
+        }
+        
+        td {
+            border-left: gray 1px solid;
+            border-bottom: gray 1px solid;
+            width: 50px;
+            height: 50px;
+            background-color: #eaeaea;
+            text-align: center;
+        }
+        
+        td.operator {
+            background-color: orange;
+            border-right: gray 1px solid;
+        }
+        
+        td.right {
+            text-align: right;
+        }
+        
+        td.function {
+            background-color: #bbbbbb;
+        }
+        
+        td:active {
+            background-color: black;
+            color: white;
+        }
+        
+        td.display {
+            border-left: gray 1px solid;
+            border-right: gray 1px solid;
+            border-top: gray 1px solid;
+            background-color: #666666;
+            font-size: 24pt;
+            padding-right: 14px;
+            border-radius: 5px 5px 0 0;
+        }
+        
+        td.white {
+            color: white;
+        }
+        
+        td.corner {
+            border-radius: 0 0 5px 0;
+        }
+        
+        td.zero {
+            padding-left: 21px;
+            text-align: left;
+            border-radius: 0 0 0 5px;
+        }
+    </style>
+    <script>
+        function AC() {
+            var obj = document.getElementById('display');
+            obj.innerHTML = "0";
+        }
+
+        function digit(obj) {
+            var display = document.getElementById('display');
+
+            if (display.innerHTML == '0') {
+                display.innerHTML = obj.innerHTML;
+            } else {
+                if (display.innerHTML.length < 15) {
+                    display.innerHTML += obj.innerHTML;
+                }
+            }
+            if (display.innerHTML.length > 9) {
+                display.style.fontSize = "14pt";
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <h1>Calculator</h1>
+
+    <table>
+        <tr>
+            <td colspan="4" id="display" class="display white right">0</td>
+        </tr>
+        <tr>
+            <td class="function" onClick="AC();">AC</td>
+            <td class="function">+/-</td>
+            <td class="function">%</td>
+            <td class="operator white">:</td>
+        </tr>
+        <tr>
+            <td onClick="digit(this);">7</td>
+            <td onClick="digit(this);">8</td>
+            <td onClick="digit(this);">9</td>
+            <td class="operator white">X</td>
+        </tr>
+        <tr>
+            <td onClick="digit(this);">4</td>
+            <td onClick="digit(this);">5</td>
+            <td onClick="digit(this);">6</td>
+            <td class="operator white">-</td>
+        </tr>
+        <tr>
+            <td onClick="digit(this);">1</td>
+            <td onClick="digit(this);">2</td>
+            <td onClick="digit(this);">3</td>
+            <td class="operator white">+</td>
+        </tr>
+        <tr>
+            <td colspan="2" class="zero" onClick="digit(this);">0</td>
+            <td>,</td>
+            <td class="operator white corner">=</td>
+        </tr>
+
+    </table>
+
+</body>
+
+</html>
